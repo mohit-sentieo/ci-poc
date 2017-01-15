@@ -8,9 +8,9 @@ import { routerMiddleware } from 'react-router-redux';
 import { createLogicMiddleware } from 'redux-logic';
 import createReducer from './reducers';
 
-const logicMiddleware = createLogicMiddleware();
-
 export default function configureStore(initialState = {}, history) {
+  const logicMiddleware = createLogicMiddleware();
+
   // Create the store with two middlewares
   // 1. logicMiddleware: enables redux-logic
   // 2. routerMiddleware: Syncs the location/URL path to the state

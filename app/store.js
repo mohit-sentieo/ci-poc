@@ -7,9 +7,12 @@ import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import { createLogicMiddleware } from 'redux-logic';
 import createReducer from './reducers';
+import requestUtil from './utils/request';
 
 export default function configureStore(initialState = {}, history) {
-  const logicMiddleware = createLogicMiddleware();
+  // inject helpers, make requestUtil available to all logic
+  const injectedHelpers = { requestUtil };
+  const logicMiddleware = createLogicMiddleware([], injectedHelpers);
 
   // Create the store with two middlewares
   // 1. logicMiddleware: enables redux-logic

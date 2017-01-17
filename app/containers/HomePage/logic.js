@@ -6,7 +6,6 @@ import { createLogic } from 'redux-logic';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_REPOS } from 'containers/App/constants';
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
-import request from 'utils/request';
 import { selectUsername } from 'containers/HomePage/selectors';
 
 /**
@@ -26,10 +25,11 @@ export const getReposLogic = createLogic({
   // so it will dispatch the resolved action from the returned promise.
   // on error, it dispatches the using the action creator set in
   // processOptions.failType above `repoLoadingError(err)`
-  process({ getState /* , action */ }) {
+  // requestUtil was injected in store.js createLogicMiddleware
+  process({ getState, requestUtil /* , action */ }) {
     const username = selectUsername()(getState());
     const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
-    return request(requestURL) // return a promise resolving to action
+    return requestUtil(requestURL) // return a promise resolving to action
       .then((repos) => reposLoaded(repos, username)); // resolve w/action
   },
 });

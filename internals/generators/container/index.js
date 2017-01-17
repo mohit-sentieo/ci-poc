@@ -33,12 +33,12 @@ module.exports = {
     type: 'confirm',
     name: 'wantActionsAndReducer',
     default: true,
-    message: 'Do you want an actions/constants/selectors/reducer tupel for this container?',
+    message: 'Do you want an actions/constants/selectors/reducer tuple for this container?',
   }, {
     type: 'confirm',
-    name: 'wantSagas',
+    name: 'wantLogic',
     default: true,
-    message: 'Do you want sagas for asynchronous flows? (e.g. fetching data)',
+    message: 'Do you want redux-logic for asynchronous flows and intercepting actions? (e.g. fetching data, validation)',
   }, {
     type: 'confirm',
     name: 'wantMessages',
@@ -123,18 +123,18 @@ module.exports = {
       });
     }
 
-    // Sagas
-    if (data.wantSagas) {
+    // Logic
+    if (data.wantLogic) {
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/sagas.js',
-        templateFile: './container/sagas.js.hbs',
+        path: '../../app/containers/{{properCase name}}/logic.js',
+        templateFile: './container/logic.js.hbs',
         abortOnFail: true,
       });
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/tests/sagas.test.js',
-        templateFile: './container/sagas.test.js.hbs',
+        path: '../../app/containers/{{properCase name}}/tests/logic.test.js',
+        templateFile: './container/logic.test.js.hbs',
         abortOnFail: true,
       });
     }

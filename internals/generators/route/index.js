@@ -13,9 +13,9 @@ function reducerExists(comp) {
   }
 }
 
-function sagasExists(comp) {
+function logicExists(comp) {
   try {
-    fs.accessSync(`app/containers/${comp}/sagas.js`, fs.F_OK);
+    fs.accessSync(`app/containers/${comp}/logic.js`, fs.F_OK);
     return true;
   } catch (e) {
     return false;
@@ -59,7 +59,7 @@ module.exports = {
   actions: (data) => {
     const actions = [];
     if (reducerExists(data.component)) {
-      data.useSagas = sagasExists(data.component); // eslint-disable-line no-param-reassign
+      data.useLogic = logicExists(data.component); // eslint-disable-line no-param-reassign
       actions.push({
         type: 'modify',
         path: '../../app/routes.js',

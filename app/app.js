@@ -5,7 +5,7 @@
  * code.
  */
 
-// Needed for redux-saga es6 generator support
+// Needed to polyfill missing ES features like Promises
 import 'babel-polyfill';
 
 /* eslint-disable import/no-unresolved, import/extensions */

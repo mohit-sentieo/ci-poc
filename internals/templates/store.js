@@ -9,7 +9,9 @@ import { createLogicMiddleware } from 'redux-logic';
 import createReducer from './reducers';
 
 export default function configureStore(initialState = {}, history) {
-  const logicMiddleware = createLogicMiddleware();
+  // inject helpers like requestUtil
+  const injectedHelpers = { };
+  const logicMiddleware = createLogicMiddleware([], injectedHelpers);
 
   // Create the store with two middlewares
   // 1. logicMiddleware: enables redux-logic

@@ -1,6 +1,4 @@
-<img src="https://raw.githubusercontent.com/mxstbr/react-boilerplate-brand/master/assets/banner-metal-optimized.jpg" alt="react boilerplate banner" align="center" />
-
-<br />
+# react-boilerplate-logic - redux-logic fork of react-boilerplate
 
 <div align="center"><strong>Start your next react project in seconds using redux-logic</strong></div>
 <div align="center">redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices. (sagas swapped out for redux-logic)</div>
@@ -8,7 +6,7 @@
 <br />
 
 <div align="center">
-  <sub>Adapted by [Jeff Barczewski](https://wtitter.com/jeffbski) to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
+  <sub>Adapted by <a href="https://wtitter.com/jeffbski">Jeff Barczewski</a>) to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
 </div>
 
 ## Features
@@ -92,7 +90,7 @@ The original [react-boilerplate project](https://github.com/mxstbr/react-boilerp
 
 This project is licensed under the MIT license,
 
-Copyright (c) 2017 Jeff Barczewski and Project Contributors
+Copyright (c) 2017 Jeff Barczewski and Project Contributors<br/>
 Copyright (c) 2016 Maximilian Stoiber
 
 For more information see `LICENSE.md`.

@@ -1,15 +1,15 @@
 {
-  "name": "react-boilerplate",
+  "name": "react-boilerplate-logic",
   "version": "3.3.3",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "description": "redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices. (sagas swapped out for redux-logic)",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mxstbr/react-boilerplate.git"
+    "url": "https://github.com/jeffbski/react-boilerplate-logic.git"
   },
   "engines": {
     "npm": ">=3"
   },
-  "author": "Max Stoiber",
+  "author": "Jeff Barczewski",
   "license": "MIT",
   "scripts": {
     "analyze:clean": "rimraf stats.json",

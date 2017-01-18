@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright (c) 2017 Jeff Barczewski and Project contributors
 Copyright (c) 2016 Maximilian Stoiber
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

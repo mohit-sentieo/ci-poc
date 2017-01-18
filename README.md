@@ -1,4 +1,6 @@
-# react-boilerplate-logic - redux-logic fork of react-boilerplate
+# react-boilerplate-logic
+
+## react-boilerplate-logic is a redux-logic fork of react-boilerplate which swaps in redux-logic for sagas.
 
 <div align="center"><strong>Start your next react project in seconds using redux-logic</strong></div>
 <div align="center">redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices. (sagas swapped out for redux-logic)</div>

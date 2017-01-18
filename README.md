@@ -8,7 +8,7 @@
 <br />
 
 <div align="center">
-  <sub>Adapted by <a href="https://wtitter.com/jeffbski">Jeff Barczewski</a> to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
+  <sub>Adapted by <a href="https://twitter.com/jeffbski">Jeff Barczewski</a> to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
 </div>
 
 ## Features

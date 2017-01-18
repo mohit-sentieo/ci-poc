@@ -1,6 +1,6 @@
 # react-boilerplate-logic
 
-## A redux-logic fork of react-boilerplate which uses redux-logic instead of sagas
+## A fork of react-boilerplate which uses redux-logic instead of sagas
 
 <div align="center"><strong>Start your next react project in seconds using redux-logic</strong></div>
 <div align="center">redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices. (sagas swapped out for redux-logic)</div>
@@ -8,7 +8,7 @@
 <br />
 
 <div align="center">
-  <sub>Adapted by <a href="https://wtitter.com/jeffbski">Jeff Barczewski</a>) to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
+  <sub>Adapted by <a href="https://wtitter.com/jeffbski">Jeff Barczewski</a> to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
 </div>
 
 ## Features

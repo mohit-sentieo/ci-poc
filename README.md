@@ -1,4 +1,4 @@
-# react-boilerplate-logic
+![react-boilerplate-logic](https://cloud.githubusercontent.com/assets/5689/22115338/3395f444-de32-11e6-85c0-842ed98924c3.jpg "react-boilerplate-logic")
 
 ## A fork of react-boilerplate which uses redux-logic instead of sagas
 

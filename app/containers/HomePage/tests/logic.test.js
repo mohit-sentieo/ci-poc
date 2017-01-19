@@ -5,7 +5,7 @@
 import expect from 'expect';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { getReposLogic } from '../logic';
+import { getReposLogic, onLogicInit } from '../logic';
 
 import { LOAD_REPOS,
          LOAD_REPOS_SUCCESS,
@@ -52,6 +52,42 @@ describe('getReposLogic', () => {
             });
   });
 });
+
+describe('getReposLogic onLogicInit', () => {
+  const username = 'jeffbski';
+  const getState = () => Imm.fromJS({
+    home: {
+      username,
+    },
+  });
+
+  it('only runs once on initial logic load (for the same store)', () => {
+    const store = {
+      getState,
+      dispatch: expect.createSpy(),
+    };
+    onLogicInit(store);
+    onLogicInit(store);
+    onLogicInit(store);
+    expect(store.dispatch.calls.length).toBe(1);
+  });
+
+  it('will run again for a different store (for testing)', () => {
+    const dispatch = expect.createSpy();
+    const store1 = {
+      getState,
+      dispatch,
+    };
+    const store2 = {
+      getState,
+      dispatch,
+    };
+    onLogicInit(store1);
+    onLogicInit(store2);
+    expect(dispatch.calls.length).toBe(2);
+  });
+});
+
 
 /*
    The rest of these tests are optional since they are more integration

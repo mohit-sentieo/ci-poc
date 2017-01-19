@@ -16,6 +16,9 @@
           injectReducer('{{ camelCase component }}', reducer.default);
           {{#if useLogic}}
           injectLogic(logic.default);
+          if (logic.onLogicInit) {
+            logic.onLogicInit(store);
+          }
           {{/if}}
           renderRoute(component);
         });

@@ -32,6 +32,9 @@ export default function createRoutes(store) {
         importModules.then(([reducer, logic, component]) => {
           injectReducer('home', reducer.default);
           injectLogic(logic.default);
+          if (logic.onLogicInit) {
+            logic.onLogicInit(store);
+          }
 
           renderRoute(component);
         });

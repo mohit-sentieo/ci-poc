@@ -25,7 +25,7 @@ The fix is to kill the process and rerun `npm start`.
     > ```Shell
     > janedoe    29811  49.1  2.1  3394936 356956 s004  S+    4:45pm   2:40.07 node server
     > ```
-    > Note: If nothing is listed, you can try `lsof -i tcp:3000` 
+    > Note: If nothing is listed, you can try `lsof -i tcp:3000`
 
 1. Then run
     ```Shell
@@ -116,37 +116,37 @@ call that includes all of them by default.
 
 *See [this and the following lesson](https://egghead.io/lessons/javascript-redux-reducer-composition-with-arrays?course=getting-started-with-redux) of the egghead.io Redux course for more information about reducer composition!*
 
-### How do I run the saga?
+### How do I run the logic?
 
 Since a container will always be within a route, one we can simply add it to the exported array in
-`sagas.js` of the route container somewhere up the tree:
+`logic.js` of the route container somewhere up the tree:
 
 ```JS
-// /containers/SomeContainer/sagas.js
+// /containers/SomeContainer/logic.js
 
-import { someOtherSagaFromNestedContainer } from './containers/SomeNestedContainer/sagas';
+import { someOtherLogicFromNestedContainer } from './containers/SomeNestedContainer/logic';
 
-function* someSaga() { /* … */ }
+export someLogic = createLogic(...);
 
 export default [
-  someSaga,
-  someOtherSagaFromNestedContainer,
+  someLogic,
+  someOtherLogicFromNestedContainer,
 ];
 ```
 
-Or, if you have multiple sagas in the nested container:
+Or, if you have multiple logic in the nested container:
 
 
 ```JS
-// /containers/SomeContainer/sagas.js
+// /containers/SomeContainer/logic.js
 
-import nestedContainerSagas from './containers/SomeNestedContainer/sagas';
+import nestedContainerLogic from './containers/SomeNestedContainer/logic';
 
-function* someSaga() { /* … */ }
+export anotherLogic = createLogic(...);
 
 export default [
-  someSaga,
-  ...nestedContainerSagas,
+  anotherLogic,
+  ...nestedContainerLogic,
 ];
 ```
 

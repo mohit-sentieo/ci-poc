@@ -9,8 +9,6 @@ redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first 
 
 [![Build Status](https://secure.travis-ci.org/jeffbski/react-boilerplate-logic.png?branch=master)](http://travis-ci.org/jeffbski/react-boilerplate-logic)
 
-<br />
-
 <sub>Adapted by <a href="https://twitter.com/jeffbski">Jeff Barczewski</a> to use redux-logic. Original code by <a href="https://twitter.com/mxstbr">Max Stoiber</a> and <a href="https://github.com/mxstbr/react-boilerplate/graphs/contributors">contributors</a>. </sub>
 
 ## Features

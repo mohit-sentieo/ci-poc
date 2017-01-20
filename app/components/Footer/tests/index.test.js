@@ -24,8 +24,9 @@ describe('<Footer />', () => {
     expect(renderedComponent.contains(
       <section>
         <FormattedMessage
-          {...messages.authorMessage}
+          {...messages.authorAdapterMessage}
           values={{
+            adapter: <A href="https://twitter.com/jeffbski">Jeff Barczewski</A>,
             author: <A href="https://twitter.com/mxstbr">Max Stoiber</A>,
           }}
         />

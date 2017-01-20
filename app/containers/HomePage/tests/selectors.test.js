@@ -22,7 +22,7 @@ describe('selectHome', () => {
 describe('selectUsername', () => {
   const usernameSelector = selectUsername();
   it('should select the username', () => {
-    const username = 'mxstbr';
+    const username = 'jeffbski';
     const mockedState = fromJS({
       home: {
         username,

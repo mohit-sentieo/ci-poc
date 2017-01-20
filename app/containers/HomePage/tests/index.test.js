@@ -55,12 +55,12 @@ describe('<HomePage />', () => {
   it('should render the repositories if loading was successful', () => {
     const repos = [{
       owner: {
-        login: 'mxstbr',
+        login: 'jeffbski',
       },
-      html_url: 'https://github.com/mxstbr/react-boilerplate',
+      html_url: 'https://github.com/jeffbski/react-boilerplate-logic',
       name: 'react-boilerplate',
       open_issues_count: 20,
-      full_name: 'mxstbr/react-boilerplate',
+      full_name: 'jeffbski/react-boilerplate-logic',
     }];
     const renderedComponent = shallow(
       <HomePage
@@ -83,7 +83,7 @@ describe('<HomePage />', () => {
       it('should dispatch changeUsername when called', () => {
         const dispatch = expect.createSpy();
         const result = mapDispatchToProps(dispatch);
-        const username = 'mxstbr';
+        const username = 'jeffbski';
         result.onChangeUsername({ target: { value: username } });
         expect(dispatch).toHaveBeenCalledWith(changeUsername(username));
       });

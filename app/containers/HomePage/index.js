@@ -85,7 +85,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 <Input
                   id="username"
                   type="text"
-                  placeholder="mxstbr"
+                  placeholder="jeffbski"
                   value={this.props.username}
                   onChange={this.props.onChangeUsername}
                 />

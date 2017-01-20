@@ -9,7 +9,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 const handleRoute = () => {};
-const href = 'http://mxstbr.com';
+const href = 'http://codewinds.com';
 const children = (<h1>Test</h1>);
 const renderComponent = (props = {}) => mount(
   <Button href={href} {...props}>

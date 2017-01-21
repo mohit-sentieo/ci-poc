@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.0.1 January 2017
+
+- ** Install redux-logic in place of redux-saga, by @gihrig
+
 ## 3.4 January 2017
 
 ### Main

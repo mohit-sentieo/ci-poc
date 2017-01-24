@@ -15,8 +15,8 @@ export function checkStore(store) {
     dispatch: isFunction,
     subscribe: isFunction,
     getState: isFunction,
+    logicMiddleware: isFunction,
     replaceReducer: isFunction,
-    runSaga: isFunction,
     asyncReducers: isObject,
   };
   invariant(
@@ -45,23 +45,23 @@ export function injectAsyncReducer(store, isValid) {
 }
 
 /**
- * Inject an asynchronously loaded saga
+ * Inject an asynchronously loaded logic
  */
-export function injectAsyncSagas(store, isValid) {
-  return function injectSagas(sagas) {
+export function injectAsyncLogic(store, isValid) {
+  return function injectLogic(logic) {
     if (!isValid) checkStore(store);
 
     invariant(
-      Array.isArray(sagas),
-      '(app/utils...) injectAsyncSagas: Expected `sagas` to be an array of generator functions'
+      Array.isArray(logic),
+      '(app/utils...) injectAsyncLogic: Expected `logic` to be an array of logic objects'
     );
 
     warning(
-      !isEmpty(sagas),
-      '(app/utils...) injectAsyncSagas: Received an empty `sagas` array'
+      !isEmpty(logic),
+      '(app/utils...) injectAsyncLogic: Received an empty `logic` array'
     );
 
-    sagas.map(store.runSaga);
+    store.logicMiddleware.mergeNewLogic(logic);
   };
 }
 
@@ -73,6 +73,6 @@ export function getAsyncInjectors(store) {
 
   return {
     injectReducer: injectAsyncReducer(store, true),
-    injectSagas: injectAsyncSagas(store, true),
+    injectLogic: injectAsyncLogic(store, true),
   };
 }

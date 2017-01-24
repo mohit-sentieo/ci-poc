@@ -5,17 +5,19 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga';
+import { createLogicMiddleware } from 'redux-logic';
 import createReducer from './reducers';
 
-const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStore(initialState = {}, history) {
+  // inject helpers like requestUtil
+  const injectedHelpers = { };
+  const logicMiddleware = createLogicMiddleware([], injectedHelpers);
   // Create the store with two middlewares
-  // 1. sagaMiddleware: Makes redux-sagas work
+  // 1. logicMiddleware: enables redux-logic
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
-    sagaMiddleware,
+    logicMiddleware,
     routerMiddleware(history),
   ];
 
@@ -39,7 +41,7 @@ export default function configureStore(initialState = {}, history) {
   );
 
   // Extensions
-  store.runSaga = sagaMiddleware.run;
+  store.logicMiddleware = logicMiddleware;
   store.asyncReducers = {}; // Async reducer registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo

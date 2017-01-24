@@ -1,3 +1,2 @@
-// needed for regenerator-runtime
-// (ES7 generator support is required by redux-saga)
+// needed for ES features like Promises
 import 'babel-polyfill';

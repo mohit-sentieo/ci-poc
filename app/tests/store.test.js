@@ -18,9 +18,9 @@ describe('configureStore', () => {
     });
   });
 
-  describe('runSaga', () => {
-    it('should contain a hook for `sagaMiddleware.run`', () => {
-      expect(typeof store.runSaga).toBe('function');
+  describe('store.logicMiddleware', () => {
+    it('should contain logic middleware instance', () => {
+      expect(typeof store.logicMiddleware).toBe('function');
     });
   });
 });

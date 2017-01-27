@@ -3,14 +3,14 @@
  */
 
 import { memoryHistory } from 'react-router';
-import { put } from 'redux-saga/effects';
+import { createLogic } from 'redux-logic';
 import { fromJS } from 'immutable';
 
 import configureStore from '../../store';
 
 import {
   injectAsyncReducer,
-  injectAsyncSagas,
+  injectAsyncLogic,
   getAsyncInjectors,
 } from '../asyncInjectors';
 
@@ -27,12 +27,15 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-function* testSaga() {
-  yield put({ type: 'TEST', payload: 'yup' });
-}
+const testLogic = createLogic({
+  type: 'TRIGGER_TEST',
+  process() { // return action to dispatch
+    return { type: 'TEST', payload: 'yup' };
+  },
+});
 
-const sagas = [
-  testSaga,
+const logic = [
+  testLogic,
 ];
 
 describe('asyncInjectors', () => {
@@ -44,11 +47,12 @@ describe('asyncInjectors', () => {
     });
 
     it('given a store, should return all async injectors', () => {
-      const { injectReducer, injectSagas } = getAsyncInjectors(store);
+      const { injectReducer, injectLogic } = getAsyncInjectors(store);
 
       injectReducer('test', reducer);
-      injectSagas(sagas);
+      injectLogic(logic);
 
+      store.dispatch({ type: 'TRIGGER_TEST' });
       const actual = store.getState().get('test');
       const expected = initialState.merge({ reduced: 'yup' });
 
@@ -137,31 +141,31 @@ describe('asyncInjectors', () => {
       });
     });
 
-    describe('injectAsyncSagas', () => {
-      it('given a store, it should provide a function to inject a saga', () => {
-        const injectSagas = injectAsyncSagas(store);
+    describe('injectAsyncLogic', () => {
+      it('given a store, it should provide a function to inject logic', () => {
+        const injectLogic = injectAsyncLogic(store);
+        injectLogic(logic);
 
-        injectSagas(sagas);
-
+        store.dispatch({ type: 'TRIGGER_TEST' });
         const actual = store.getState().get('test');
         const expected = initialState.merge({ reduced: 'yup' });
 
         expect(actual.toJS()).toEqual(expected.toJS());
       });
 
-      it('should throw if passed invalid saga', () => {
+      it('should throw if passed invalid logic', () => {
         let result = false;
 
-        const injectSagas = injectAsyncSagas(store);
+        const injectLogic = injectAsyncLogic(store);
 
         try {
-          injectSagas({ testSaga });
+          injectLogic(false /* should be logic arr */);
         } catch (err) {
           result = err.name === 'Invariant Violation';
         }
 
         try {
-          injectSagas(testSaga);
+          injectLogic(testLogic); // should be an array of logic
         } catch (err) {
           result = err.name === 'Invariant Violation';
         }

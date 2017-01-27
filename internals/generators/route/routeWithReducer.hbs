@@ -4,18 +4,21 @@
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/{{ properCase component }}/reducer'),
-          {{#if useSagas}}
-          import('containers/{{ properCase component }}/sagas'),
+          {{#if useLogic}}
+          import('containers/{{ properCase component }}/logic'),
           {{/if}}
           import('containers/{{ properCase component }}'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer,{{#if useSagas}} sagas,{{/if}} component]) => {
+        importModules.then(([reducer,{{#if useLogic}} logic,{{/if}} component]) => {
           injectReducer('{{ camelCase component }}', reducer.default);
-          {{#if useSagas}}
-          injectSagas(sagas.default);
+          {{#if useLogic}}
+          injectLogic(logic.default);
+          if (logic.onLogicInit) {
+            logic.onLogicInit(store);
+          }
           {{/if}}
           renderRoute(component);
         });

@@ -17,7 +17,7 @@ Here's a curated list of packages that you should have knowledge of, before star
 - [ ] [React](https://facebook.github.io/react/)
 - [ ] [React Router](https://github.com/ReactTraining/react-router)
 - [ ] [Redux](http://redux.js.org/)
-- [ ] [Redux Saga](http://yelouafi.github.io/redux-saga/)
+- [ ] [Redux Logic](https://github.com/jeffbski/redux-logic)
 - [ ] [Reselect](https://github.com/reactjs/reselect)
 - [ ] [ImmutableJS](https://facebook.github.io/immutable-js/)
 - [ ] [Styled Components](https://github.com/styled-components/styled-components)
@@ -33,7 +33,7 @@ Here's a curated list of packages that you should have knowledge of, before star
 
 Note that while `react-boilerplate` includes a lot of features, many of them are optional and you can find instructions in the docs on how to remove...
 
-- [...`redux-saga` or `reselect`](https://github.com/mxstbr/react-boilerplate/blob/master/docs/js/remove.md).
+- [...`redux-logic` or `reselect`](https://github.com/mxstbr/react-boilerplate/blob/master/docs/js/remove.md).
 - ...[offline-first, add to homescreen, performant web font loading and image optimisation](https://github.com/mxstbr/react-boilerplate/blob/master/docs/general/remove.md)
 - [`sanitize.css`](https://github.com/mxstbr/react-boilerplate/blob/master/docs/css/remove.md)
 - [i18n (i.e. `react-intl`)](https://github.com/mxstbr/react-boilerplate/blob/0f88f55ed905f8432c3dd7b452d713df5fb76d8e/docs/js/i18n.md#removing-i18n-and-react-intl)
@@ -114,7 +114,7 @@ Webpack requires an entry point to your application. Think of it as a door to yo
 - Path `"/features"` corresponds to container `<FeaturePage />`
 - Path `"*"` i.e. all other paths correspond to the `<NotFoundPage />` (i.e. the 404 page)
 
-These containers, along with their corresponding reducer and sagas, are loaded asynchronously with the help of dynamic `import()`. Whenever webpack encounters `import()` in the code, it creates a separate file for those imports. That means for every route, there will be a separate file. And by corollary, only those javascript files will be downloaded by the browser which are required for the current route.
+These containers, along with their corresponding reducer and redux-logics, are loaded asynchronously with the help of dynamic `import()`. Whenever webpack encounters `import()` in the code, it creates a separate file for those imports. That means for every route, there will be a separate file. And by corollary, only those javascript files will be downloaded by the browser which are required for the current route.
 
 **When you navigate to `"/"`, only files related to the Homepage will be downloaded and subsequently executed. This makes your application incredibly lightweight and lightning fast.**
 
@@ -137,7 +137,7 @@ The store is created with the `createStore()` factory, which accepts three param
 In our application we are using two such middleware.
 
 1. **Router middleware:** Keeps your routes in sync with the redux `store`.
-2. **Redux saga:** Is used for managing _side-effects_ such as dispatching actions asynchronously or accessing browser data.
+2. **Redux logic:** Is used for managing _side-effects_ such as dispatching actions asynchronously or accessing browser data.
 
 ### Reselect
 
@@ -162,9 +162,9 @@ Let's see how the three features of reselect help.
 - **Memoization:** A selector will not compute a new result unless one of its arguments change. That means, if you are repeating the same search once again, reselect will not filter the array over and over. It will just return the previously computed, and subsequently cached, result. Reselect compares the old and the new arguments and then decides whether to compute again or return the cached result.
 - **Composability:** You can combine multiple selectors. For example, one selector can filter usernames according to a search key and another selector can filter the already filtered array according to gender. One more selector can further filter according to age. You combine these selectors by using `createSelector()`
 
-### Redux Saga
+### Redux Logic
 
-If your application is going to interact with some back-end application for data, we recommend using redux saga for side effect management. Too much jargon? Let's simplify.
+If your application is going to interact with some back-end application for data, we recommend using redux logic for side effect management. Too much jargon? Let's simplify.
 
 Imagine that your application is fetching data in json format from a back-end. For every API call, ideally you should define at least three kinds of [action creators](http://redux.js.org/docs/basics/Actions.html):
 
@@ -172,9 +172,9 @@ Imagine that your application is fetching data in json format from a back-end. F
 2. `API_SUCCESS`: Upon dispatching this, your application should show the data to the user.
 3. `API_FAILURE`: Upon dispatching this, your application should show an error message to the user.
 
-And this is only for **_one_** API call. In a real-world scenario, one page of your application could be making tens of API calls. How do we manage all of them effectively? This essentially boils down to controlling the flow of your application. What if there was a background process that handles multiple actions simultaneously, communicates with redux store and react containers at the same time? This is where redux-saga comes into the picture.
+And this is only for **_one_** API call. In a real-world scenario, one page of your application could be making tens of API calls. How do we manage all of them effectively? This essentially boils down to controlling the flow of your application. What if there was a background process that handles multiple actions simultaneously, communicates with redux store and react containers at the same time? This is where redux-logic comes into the picture.
 
-The mental model is that a saga is like a separate thread in your application that's solely responsible for side effects. `redux-saga` is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
+The mental model is that a logic is like a separate thread in your application that's solely responsible for side effects. `redux-logic` is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal redux actions, it has access to the full redux application state and it can dispatch redux actions as well.
 
 ## Example App: Behind the scenes
 
@@ -194,26 +194,26 @@ Run `npm start` to launch the application. If you start browsing at [https://loc
 
 - `mapStateToProps()`: Generally, we provide incoming state from Redux store to the react component through this method. Notice that the we do not provide the entire state to the component, simply because we don't want the react component to have access to irrelevant data. The state will be filtered by selectors such as `selectRepos`, `selectUsername` etc.
 
-Together these two methods work like magic. When you type something in the textbox the following things will happen in a sequential manner:
+Together these two methods work like magic. When you type something in the text-box the following things will happen in a sequential manner:
 
-1. `changeUsername()` will send text to the Redux store. The text can be accessed using `evt.target.value`. Here, `evt` is the `onChange` event emmited by pressing a key.
+1. `changeUsername()` will send text to the Redux store. The text can be accessed using `evt.target.value`. Here, `evt` is the `onChange` event emitted by pressing a key.
 2. The Redux store will consult with its corresponding reducer, since a reducer knows what to do with the data.
 3. When a reducer computes a new state tree, the store will update its state with the newly typed data.
-4. An update has occured in the state, therefore `mapStateToProps()` will be triggered and your react component will get the new data.
+4. An update has occurred in the state, therefore `mapStateToProps()` will be triggered and your react component will get the new data.
 5. The updated data will be set as the `value` to your `<Input />`.
 
-_So you see, if you type something in the textbox, it will not be directly reflected in the DOM. It must pass through redux. Redux will update the state and return it to the component. It's the component's responsibility to show the updated data._
+_So you see, if you type something in the text-box, it will not be directly reflected in the DOM. It must pass through redux. Redux will update the state and return it to the component. It's the component's responsibility to show the updated data._
 
-#### `HomePage/sagas.js`
+#### `HomePage/logic.js`
 
-You must be wondering where does the list of repositories come from! Sagas are primarily used for making API calls. Sagas intercept actions dispatched to the Redux store. That means a saga will listen to the actions and if it finds an action of interest, it will do something.
+You must be wondering where does the list of repositories come from! Logics are primarily used for making API calls. Logics intercept actions dispatched to the Redux store. That means a logic will listen to the actions and if it finds an action of interest, it will do something.
 
 Sagas are nothing but ES6 [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*). These functions act as normal functions, the only difference is that they can be "paused" and "resumed" at any point in time. `redux-saga` provides an intuitive, declarative API for managing asynchronous operations.
 
 Check out [`HomePage/sagas.js`](https://github.com/mxstbr/react-boilerplate/blob/master/app/containers/HomePage/sagas.js). It can be confusing for untrained eyes. The API of `redux-saga` is self-descriptive once you've seen it, so let's go over what happens in there:
 
 - You can `fork` a saga to send it to the background. That way, your code will not get blocked even when the saga is continuously running.
-- `takeLatest` is used for listening for a particular action. In this case, it will wait for a `LOAD_REPOS` action. Whenever you disptach this action, the saga will understand that you want to fetch repos from github's public API by calling `getRepos()`.
+- `takeLatest` is used for listening for a particular action. In this case, it will wait for a `LOAD_REPOS` action. Whenever you dispatch this action, the saga will understand that you want to fetch repos from github's public API by calling `getRepos()`.
 - If the API successfully returns some data, a `reposLoaded()` action will be dispatched which carries the data. When redux store receives this action, [a reducer](https://github.com/mxstbr/react-boilerplate/blob/master/app/containers/App/reducer.js) will set incoming data in the new state tree.
 
 _An update has occurred!_ `mapStateToProps()` will be triggered. `<HomePage />` will receive the new data and rerender.

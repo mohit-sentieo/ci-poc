@@ -136,15 +136,15 @@ name: 'post',
 getComponent(nextState, cb) {
  const importModules = Promise.all([
    import('containers/Post/reducer'),
-   import('containers/Post/sagas'),
+   import('containers/Post/logic'),
    import('containers/Post'),
  ]);
 
  const renderRoute = loadModule(cb);
 
- importModules.then(([reducer, sagas, component]) => {
+ importModules.then(([reducer, logic, component]) => {
    injectReducer('post', reducer.default);
-   injectSagas(sagas.default);
+   injectLogic(logic.default);
    renderRoute(component);
  });
 
@@ -178,26 +178,52 @@ export function postLoaded(post) {
 }
 ```
 
-###Saga:
+### Logic:
 
 ```JS
-const { slug } = yield take(LOAD_POST);
-yield call(getXhrPodcast, slug);
+import { createLogic } from 'redux-logic';
 
-export function* getXhrPodcast(slug) {
+// using process hook's dispatch/done callback style
+const getXhrPodcastLogic = createLogic({
+  type: LOAD_POST,
+  process({ getState, action, requestUtil }, dispatch, done) {
+    const { slug } = action;
   const requestURL = `http://your.api.com/api/posts/${slug}`;
-  const post = yield call(request, requestURL);
-  if (!post.err) {
-    yield put(postLoaded(post));
-  } else {
-    yield put(postLoadingError(post.err));
+    requestUtil(requestURL)
+      .then(post => dispatch(postLoaded(post)))
+      .catch(err => {
+        console.error(err); // in case of render error
+        dispatch(postLoadingError(post.err));
+      })
+      .then(() => done()); // call when done dispatching
   }
+});
+```
+OR since redux-logic supports a nice API for promises, async/await, and observables where you simply return the value rather than using dispatch/done.
+```js
+import { createLogic } from 'redux-logic';
+// using process hook's return dispatch style
+const getXhrPodcastLogic = createLogic({
+  type: LOAD_POST,
+  processOptions: { // optional to influence dispatching
+    successType: postLoaded, // apply this action creator on success
+    failType: postLoadingError, // apply this action creator on error
+  },
+  // omitting dispatch/done makes process use the returned promise
+  process({ getState, action, requestUtil }) {
+    const { slug } = action.payload;
+    const requestURL = `http://your.api.com/api/posts/${slug}`;
+    return requestUtil(requestURL); // return promise with data
 }
+});
 ```
 
-Wait (`take`) for the LOAD_POST constant, which contains the slug payload from the `getPost()` function in actions.js. 
 
-When the action is fired then dispatch the `getXhrPodcast()` function to get the response from your api. On success dispatch the `postLoaded()` action (`yield put`) which sends back the response and can be added into the reducer state.
+This logic will listen for actions of type LOAD_POST and once it finds one it will use the `requestUtil` helper (which was injected in app/store.js in the createLogicMiddleware) which was already injected to be available to all logic instances. Use the `requestUtil` to fetch the content, returning a promise which resolves to the data.
 
+In our first example using dispatch and one, we demonstrate writing redux-logic using a callback style code, calling dispatch when we want to dispatch and calling done when we are finished.
 
+In the second exmple we are using the return dispatch signature by omitting the dispatch and done from the function. It will realize that the returned value is a promise and wait for its resolve/reject value which it will hand to our successType action creator or failType action creator to create the action and dispatch it. Using successType and failType are each optional to automatically create an action or use an action creator to wrap the data/error.
+
+The dispatched action will go through redux middleware and down to the reducer where state is updated.
 You can read more on [`react-router`'s documentation](https://github.com/reactjs/react-router/blob/master/docs/API.md#props-3).

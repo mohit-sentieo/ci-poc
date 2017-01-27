@@ -1,28 +1,29 @@
-## Removing `redux-saga`
+## Removing `redux-logic`
 
-**We don't recommend removing `redux-saga`**, as we strongly feel that it's the
+**We don't recommend removing `redux-logic`**, as we strongly feel that it's the
 way to go for most redux based applications.
 
 If you really want to get rid of it, you will have to delete its traces from several places.
 
 **app/store.js**
 
-1. Remove statement `import createSagaMiddleware from 'redux-saga'`.
-2. Remove statement `const sagaMiddleware = createSagaMiddleware()`.
-3. Remove `sagaMiddleware` from `middlewares` array.
-4. Remove statement `store.runSaga = sagaMiddleware.run`
+1. Remove statement `import { createLogicMiddleware } from 'redux-logic'`.
+2. Remove statement `const logicMiddleware = createLogicMiddleware([], injectedHelpers);`.
+3. Remove `logicMiddleware` from `middlewares` array.
+4. Remove statement `store.logicMiddleware = logicMiddleware;`
 
 **app/utils/asyncInjectors.js**
 
-1. Remove `runSaga: isFunction` from `shape`.
-2. Remove function `injectAsyncSagas`.
-3. Do not export `injectSagas: injectAsyncSagas(store, true)`.
+1. Remove `logicMiddleware: isFunction,` from `shape`.
+2. Remove function `injectAsyncLogic`.
+3. Do not export `injectLogic: injectAsyncLogic(store, true)`.
 
 **app/routes.js**
 
-1. Do not pull out `injectSagas` from `getAsyncInjectors()`.
-2. Remove `sagas` from `importModules.then()`.
-3. Remove `injectSagas(sagas.default)` from every route that uses Saga.
+1. Do not pull out `injectLogic` from `getAsyncInjectors()`.
+2. Remove `System.import('containers/HomePage/logic'),`
+2. Remove `logic` from `importModules.then()`.
+3. Remove `injectLogic(logic.default);` from every route that uses logic.
 
 **Finally, remove it from the `package.json`. Then you should be good to go with whatever
 side-effect management library you want to use!**

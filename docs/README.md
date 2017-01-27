@@ -24,7 +24,7 @@
   - [Redux](js/redux.md)
   - [ImmutableJS](js/immutablejs.md)
   - [reselect](js/reselect.md)
-  - [redux-saga](js/redux-saga.md)
+  - [redux-logic](js/redux-logic.md)
   - [i18n](js/i18n.md)
   - [routing](js/routing.md)
 
@@ -41,7 +41,7 @@
 
 1. Open [localhost:3000](http://localhost:3000) to see it in action.
 
-    - Add a Github username to see Redux and Redux Sagas in action: effortless
+    - Add a Github username to see Redux and redux-logic in action: effortless
       async state updates and side effects are now yours :)
     - Edit the file at `./app/containers/HomePage/index.js` so that the text of
       the `<Button>` component reads "Features!!!"... Hot Module Reloading gives

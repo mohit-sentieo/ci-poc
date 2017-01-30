@@ -6,7 +6,7 @@ import { createLogic } from 'redux-logic';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { LOAD_REPOS } from 'containers/App/constants';
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
-import { selectUsername } from 'containers/HomePage/selectors';
+import { makeSelectUsername } from 'containers/HomePage/selectors';
 
 /**
  * Github repos request/response handler
@@ -27,7 +27,7 @@ export const getReposLogic = createLogic({
   // processOptions.failType above `repoLoadingError(err)`
   // requestUtil was injected in store.js createLogicMiddleware
   process({ getState, requestUtil /* , action */ }) {
-    const username = selectUsername()(getState());
+    const username = makeSelectUsername()(getState());
     const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
     return requestUtil(requestURL) // return a promise resolving to action
       .then((repos) => reposLoaded(repos, username)); // resolve w/action
@@ -44,7 +44,7 @@ export function onLogicInit(store) {
   if (lastStore === store) { return; } // only running on initial load
   lastStore = store; // save for load once check
 
-  const username = selectUsername()(store.getState());
+  const username = makeSelectUsername()(store.getState());
   if (username) {
     store.dispatch({ type: LOAD_REPOS });
   }

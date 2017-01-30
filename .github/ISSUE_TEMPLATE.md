@@ -20,5 +20,7 @@ https://github.com/jeffbski/react-boilerplate-logic/issues?q=is%3Aissue+is%3Aclo
 
 # Versions
 
+- React-Boilerplate-Logic (see `package.json`):
 - Node/NPM:
 - Browser:
+- OS/version:

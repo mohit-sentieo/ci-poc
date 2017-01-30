@@ -2,44 +2,27 @@
  * Test the HomePage
  */
 
-import expect from 'expect';
-import { shallow, mount } from 'enzyme';
 import React from 'react';
-
+import { shallow, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
+
+import List from 'components/List';
+import ListItem from 'components/ListItem';
+import ReposList from 'components/ReposList';
 import { HomePage, mapDispatchToProps } from '../index';
 import { changeUsername } from '../actions';
 import { loadRepos } from '../../App/actions';
-import RepoListItem from 'containers/RepoListItem';
-import List from 'components/List';
-import LoadingIndicator from 'components/LoadingIndicator';
 
 describe('<HomePage />', () => {
-  it('should render the loading indicator when its loading', () => {
+  it('should render the repos list', () => {
     const renderedComponent = shallow(
-      <HomePage loading />
+      <HomePage loading error={false} repos={[]} />
     );
-    expect(renderedComponent.contains(<List component={LoadingIndicator} />)).toEqual(true);
-  });
-
-  it('should render an error if loading failed', () => {
-    const renderedComponent = mount(
-      <IntlProvider locale="en">
-        <HomePage
-          loading={false}
-          error={{ message: 'Loading failed!' }}
-        />
-      </IntlProvider>
-    );
-    expect(
-      renderedComponent
-        .text()
-        .indexOf('Something went wrong, please try again!')
-      ).toBeGreaterThan(-1);
+    expect(renderedComponent.contains(<ReposList loading error={false} repos={[]} />)).toEqual(true);
   });
 
   it('should render fetch the repos on mount if a username exists', () => {
-    const submitSpy = expect.createSpy();
+    const submitSpy = jest.fn();
     mount(
       <IntlProvider locale="en">
         <HomePage
@@ -69,19 +52,19 @@ describe('<HomePage />', () => {
       />
     );
 
-    expect(renderedComponent.contains(<List items={repos} component={RepoListItem} />)).toEqual(true);
+    expect(renderedComponent.contains(<List items={repos} component={ListItem} />)).toEqual(true);
   });
 
   describe('mapDispatchToProps', () => {
     describe('onChangeUsername', () => {
       it('should be injected', () => {
-        const dispatch = expect.createSpy();
+        const dispatch = jest.fn();
         const result = mapDispatchToProps(dispatch);
-        expect(result.onChangeUsername).toExist();
+        expect(result.onChangeUsername).toBeDefined();
       });
 
       it('should dispatch changeUsername when called', () => {
-        const dispatch = expect.createSpy();
+        const dispatch = jest.fn();
         const result = mapDispatchToProps(dispatch);
         const username = 'jeffbski';
         result.onChangeUsername({ target: { value: username } });
@@ -92,20 +75,20 @@ describe('<HomePage />', () => {
 
   describe('onSubmitForm', () => {
     it('should be injected', () => {
-      const dispatch = expect.createSpy();
+      const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
-      expect(result.onSubmitForm).toExist();
+      expect(result.onSubmitForm).toBeDefined();
     });
 
     it('should dispatch loadRepos when called', () => {
-      const dispatch = expect.createSpy();
+      const dispatch = jest.fn();
       const result = mapDispatchToProps(dispatch);
       result.onSubmitForm();
       expect(dispatch).toHaveBeenCalledWith(loadRepos());
     });
 
     it('should preventDefault if called with event', () => {
-      const preventDefault = expect.createSpy();
+      const preventDefault = jest.fn();
       const result = mapDispatchToProps(() => {});
       const evt = { preventDefault };
       result.onSubmitForm(evt);

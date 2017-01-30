@@ -20,7 +20,7 @@ This is what a standard (generated) route looks like for a container:
   name: 'home',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      System.import('containers/HomePage')
+      import('containers/HomePage')
     ]);
 
     const renderRoute = loadModule(cb);
@@ -54,7 +54,7 @@ For example, if you have a route called `about` at `/about` and want to make a c
   name: 'about',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      System.import('containers/AboutPage'),
+      import('containers/AboutPage'),
     ]);
 
     const renderRoute = loadModule(cb);
@@ -71,7 +71,7 @@ For example, if you have a route called `about` at `/about` and want to make a c
       name: 'team',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/TeamPage'),
+          import('containers/TeamPage'),
         ]);
 
         const renderRoute = loadModule(cb);
@@ -97,7 +97,7 @@ To add an index route, use the following pattern:
   name: 'home',
   getComponent(nextState, cb) {
     const importModules = Promise.all([
-      System.import('containers/HomePage')
+      import('containers/HomePage')
     ]);
 
     const renderRoute = loadModule(cb);
@@ -111,7 +111,7 @@ To add an index route, use the following pattern:
   indexRoute: {
     getComponent(partialNextState, cb) {
       const importModules = Promise.all([
-        System.import('containers/HomeView')
+        import('containers/HomeView')
       ]);
 
       const renderRoute = loadModule(cb);
@@ -135,9 +135,9 @@ path: '/posts/:slug',
 name: 'post',
 getComponent(nextState, cb) {
  const importModules = Promise.all([
-   System.import('containers/Post/reducer'),
-   System.import('containers/Post/logic'),
-   System.import('containers/Post'),
+   import('containers/Post/reducer'),
+   import('containers/Post/logic'),
+   import('containers/Post'),
  ]);
 
  const renderRoute = loadModule(cb);
@@ -201,19 +201,15 @@ const getXhrPodcastLogic = createLogic({
 ```
 
 OR since redux-logic supports a nice API for promises, async/await, and observables where you simply return the value rather than using dispatch/done.
-
 ```js
 import { createLogic } from 'redux-logic';
-
 // using process hook's return dispatch style
 const getXhrPodcastLogic = createLogic({
   type: LOAD_POST,
-
   processOptions: { // optional to influence dispatching
     successType: postLoaded, // apply this action creator on success
     failType: postLoadingError, // apply this action creator on error
   },
-
   // omitting dispatch/done makes process use the returned promise
   process({ getState, action, requestUtil }) {
     const { slug } = action.payload;
@@ -231,6 +227,4 @@ In our first example using dispatch and one, we demonstrate writing redux-logic 
 In the second exmple we are using the return dispatch signature by omitting the dispatch and done from the function. It will realize that the returned value is a promise and wait for its resolve/reject value which it will hand to our successType action creator or failType action creator to create the action and dispatch it. Using successType and failType are each optional to automatically create an action or use an action creator to wrap the data/error.
 
 The dispatched action will go through redux middleware and down to the reducer where state is updated.
-
-
 You can read more on [`react-router`'s documentation](https://github.com/reactjs/react-router/blob/master/docs/API.md#props-3).

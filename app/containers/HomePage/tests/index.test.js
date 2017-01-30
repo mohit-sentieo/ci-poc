@@ -6,8 +6,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 
-import List from 'components/List';
-import ListItem from 'components/ListItem';
 import ReposList from 'components/ReposList';
 import { HomePage, mapDispatchToProps } from '../index';
 import { changeUsername } from '../actions';
@@ -45,6 +43,7 @@ describe('<HomePage />', () => {
       open_issues_count: 20,
       full_name: 'jeffbski/react-boilerplate-logic',
     }];
+
     const renderedComponent = shallow(
       <HomePage
         repos={repos}
@@ -52,7 +51,7 @@ describe('<HomePage />', () => {
       />
     );
 
-    expect(renderedComponent.contains(<List items={repos} component={ListItem} />)).toEqual(true);
+    expect(renderedComponent.contains(<ReposList loading={undefined} error={false} repos={repos} />)).toEqual(true);
   });
 
   describe('mapDispatchToProps', () => {

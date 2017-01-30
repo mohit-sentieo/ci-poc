@@ -137,7 +137,7 @@ The store is created with the `createStore()` factory, which accepts three param
 In our application we are using two such middleware.
 
 1. **Router middleware:** Keeps your routes in sync with the redux `store`.
-2. **Redux logic:** Is used for managing _side-effects_ such as dispatching actions asynchronously or accessing browser data.
+2. **Redux logic:** Is used for managing _side-effects_ such as dispatching actions asynchronously or accessing browser data. It also has the ability to intercept actions to perform validation, transformation, and augmentation.
 
 ### Reselect
 
@@ -221,9 +221,6 @@ The validate/transform hooks are there if you want to intercept the actions befo
 The process hook (if allowed to run) will provide you with the full app state and also possibly some injected dependencies that you can use to do asynchronous work. When you are done you indicate what you would like to dispatch.
 
 Using the declared properties you set, redux-logic takes care of filtering, cancellation, latest filtering, debouncing, etc. Your code doesn't have to worry about that.
-
-
-Sagas are nothing but ES6 [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*). These functions act as normal functions, the only difference is that they can be "paused" and "resumed" at any point in time. `redux-saga` provides an intuitive, declarative API for managing asynchronous operations.
 
 Check out [`HomePage/logic.js`](https://github.com/jeffbski/react-boilerplate-logic/blob/master/app/containers/HomePage/logic.js). You will see how the process hook is being used to fetch data using the injected helper `requestUtil` which returns a promise. When the promise resolves the data is passed to the `reposLoaded` action creator. This promise is being returned to redux-logic and it will dispatch the action. If any problems occurred then it will pass the error to `repoLoadingError` action creator and dispatch the result. This is an example of using redux-logic with promises, you can also use callbacks, async/await, and observables.
 

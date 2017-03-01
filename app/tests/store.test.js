@@ -2,26 +2,25 @@
  * Test store addons
  */
 
-import expect from 'expect';
-import configureStore from '../store';
 import { browserHistory } from 'react-router';
+import configureStore from '../store';
 
 describe('configureStore', () => {
   let store;
 
-  before(() => {
+  beforeAll(() => {
     store = configureStore({}, browserHistory);
   });
 
   describe('asyncReducers', () => {
     it('should contain an object for async reducers', () => {
-      expect(typeof store.asyncReducers).toEqual('object');
+      expect(typeof store.asyncReducers).toBe('object');
     });
   });
 
   describe('store.logicMiddleware', () => {
     it('should contain logic middleware instance', () => {
-      expect(typeof store.logicMiddleware).toEqual('function');
+      expect(typeof store.logicMiddleware).toBe('function');
     });
   });
 });

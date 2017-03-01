@@ -2,18 +2,16 @@
  * Tests for HomePage logic
  */
 
-import expect from 'expect';
 import { LOCATION_CHANGE } from 'react-router-redux';
-
-import { getReposLogic, onLogicInit } from '../logic';
+import { createLogicMiddleware } from 'redux-logic';
+import Imm from 'immutable';
 
 import { LOAD_REPOS,
          LOAD_REPOS_SUCCESS,
          LOAD_REPOS_ERROR } from 'containers/App/constants';
 import { reposLoaded /* , repoLoadingError */ } from 'containers/App/actions';
 
-import { createLogicMiddleware } from 'redux-logic';
-import Imm from 'immutable';
+import { getReposLogic, onLogicInit } from '../logic';
 
 describe('getReposLogic', () => {
   const username = 'jeffbski';
@@ -64,16 +62,16 @@ describe('getReposLogic onLogicInit', () => {
   it('only runs once on initial logic load (for the same store)', () => {
     const store = {
       getState,
-      dispatch: expect.createSpy(),
+      dispatch: jest.fn(),
     };
     onLogicInit(store);
     onLogicInit(store);
     onLogicInit(store);
-    expect(store.dispatch.calls.length).toBe(1);
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
   });
 
   it('will run again for a different store (for testing)', () => {
-    const dispatch = expect.createSpy();
+    const dispatch = jest.fn();
     const store1 = {
       getState,
       dispatch,
@@ -84,10 +82,9 @@ describe('getReposLogic onLogicInit', () => {
     };
     onLogicInit(store1);
     onLogicInit(store2);
-    expect(dispatch.calls.length).toBe(2);
+    expect(dispatch).toHaveBeenCalledTimes(2);
   });
 });
-
 
 /*
    The rest of these tests are optional since they are more integration
@@ -110,17 +107,17 @@ describe('getReposLogic integration', () => {
         username,
       },
     });
-    const next = expect.createSpy();
-    const dispatch = expect.createSpy();
+    const next = jest.fn();
+    const dispatch = jest.fn();
     const loadReposAction = { type: LOAD_REPOS };
     mw({ dispatch, getState })(next)(loadReposAction);
     return mw.whenComplete(() => {
-      expect(next.calls.length).toBe(1);
-      expect(next.calls[0].arguments[0]).toEqual(loadReposAction);
-      expect(dispatch.calls.length).toBe(1);
-      expect(dispatch.calls[0].arguments[0].type).toBe(LOAD_REPOS_SUCCESS);
-      expect(dispatch.calls[0].arguments[0].repos).toEqual(repos);
-      expect(dispatch.calls[0].arguments[0].username).toBe(username);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).lastCalledWith(loadReposAction);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch.mock.calls[0][0].type).toContain(LOAD_REPOS_SUCCESS);
+      expect(dispatch.mock.calls[0][0].repos).toBe(repos);
+      expect(dispatch.mock.calls[0][0].username).toBe(username);
     });
   });
 
@@ -135,16 +132,16 @@ describe('getReposLogic integration', () => {
         username,
       },
     });
-    const next = expect.createSpy();
-    const dispatch = expect.createSpy();
+    const next = jest.fn();
+    const dispatch = jest.fn();
     const loadReposAction = { type: LOAD_REPOS };
     mw({ dispatch, getState })(next)(loadReposAction);
     return mw.whenComplete(() => {
-      expect(next.calls.length).toBe(1);
-      expect(next.calls[0].arguments[0]).toEqual(loadReposAction);
-      expect(dispatch.calls.length).toBe(1);
-      expect(dispatch.calls[0].arguments[0].type).toBe(LOAD_REPOS_ERROR);
-      expect(dispatch.calls[0].arguments[0].error.message).toBe('Not Found');
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).lastCalledWith(loadReposAction);
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch.mock.calls[0][0].type).toContain(LOAD_REPOS_ERROR);
+      expect(dispatch.mock.calls[0][0].error.message).toBe('Not Found');
     });
   });
 
@@ -163,15 +160,15 @@ describe('getReposLogic integration', () => {
         username,
       },
     });
-    const next = expect.createSpy();
-    const dispatch = expect.createSpy();
+    const next = jest.fn();
+    const dispatch = jest.fn();
     const loadReposAction = { type: LOAD_REPOS };
     const mwInstance = mw({ dispatch, getState })(next);
     mwInstance(loadReposAction); // trigger request
     mwInstance({ type: LOCATION_CHANGE }); // route changed before resp
     return mw.whenComplete(() => {
-      expect(next.calls.length).toBe(2); // loadReposAction, LOCATION_CHANGE
-      expect(dispatch.calls.length).toBe(0);
+      expect(next).toHaveBeenCalledTimes(2); // loadReposAction, LOCATION_CHANGE
+      expect(dispatch).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -191,8 +188,8 @@ describe('getReposLogic integration', () => {
       },
     });
     const getState = () => state;
-    const next = expect.createSpy();
-    const dispatch = expect.createSpy();
+    const next = jest.fn();
+    const dispatch = jest.fn();
     const loadReposAction = { type: LOAD_REPOS };
     const mwInstance = mw({ dispatch, getState })(next);
     mwInstance(loadReposAction); // trigger codewinds request
@@ -202,13 +199,14 @@ describe('getReposLogic integration', () => {
     state = state.setIn(['home', 'username'], username2);
     mwInstance(loadReposAction); // trigger jeffbski request
     return mw.whenComplete(() => {
-      expect(next.calls.length).toBe(2); // loadReposAction, loadReposAction
-      expect(dispatch.calls.length).toBe(1); // only latest response
-      expect(dispatch.calls[0].arguments[0].type).toBe(LOAD_REPOS_SUCCESS);
-      expect(dispatch.calls[0].arguments[0].username).toBe(username2);
-      expect(dispatch.calls[0].arguments[0].repos).toEqual([
-        `https://api.github.com/users/${username2}/repos?type=all&sort=updated`,
-      ]);
+      expect(next).toHaveBeenCalledTimes(2); // loadReposAction, loadReposAction
+      expect(dispatch).toHaveBeenCalledTimes(1); // only latest response
+      expect(dispatch.mock.calls[0][0].type).toContain(LOAD_REPOS_SUCCESS);
+      expect(dispatch.mock.calls[0][0].username).toBe(username2);
+      expect(dispatch.mock.calls[0][0].repos).toEqual(
+        [
+          `https://api.github.com/users/${username2}/repos?type=all&sort=updated`,
+        ]);
     });
   });
 });

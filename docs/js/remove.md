@@ -8,10 +8,9 @@ If you really want to get rid of it, you will have to delete its traces from sev
 **app/store.js**
 
 1. Remove statement `import { createLogicMiddleware } from 'redux-logic'`.
-2. Remove statement `const injectedHelpers = { requestUtil };`.
-3. Remove statement `const logicMiddleware = createLogicMiddleware([], injectedHelpers);`.
-4. Remove `logicMiddleware` from `middlewares` array.
-5. Remove statement `store.logicMiddleware = logicMiddleware;`
+2. Remove statement `const logicMiddleware = createLogicMiddleware([], injectedHelpers);`.
+3. Remove `logicMiddleware` from `middlewares` array.
+4. Remove statement `store.logicMiddleware = logicMiddleware;`
 
 **app/utils/asyncInjectors.js**
 
@@ -23,9 +22,8 @@ If you really want to get rid of it, you will have to delete its traces from sev
 
 1. Do not pull out `injectLogic` from `getAsyncInjectors()`.
 2. Remove `System.import('containers/HomePage/logic'),`
-
-2. Remove `logic` from `importModules.then()`.
-3. Remove `injectLogic(logic.default);` from every route that uses logic.
+3. Remove `logic` from `importModules.then()`.
+4. Remove `injectLogic(logic.default);` from every route that uses logic.
 
 **Finally, remove it from the `package.json`. Then you should be good to go with whatever
 side-effect management library you want to use!**
@@ -37,12 +35,12 @@ your `mapStateToProps` functions like you normally would!
 
 You'll also need to hook up the history directly to the store. Make changes to `app/app.js`.
 
-1. Remove statement `import { selectLocationState } from 'containers/App/selectors'`
+1. Remove statement `import { makeSelectLocationState } from 'containers/App/selectors'`
 2. Make necessary changes to `history` as follows:
 
 ```js
 
-const selectLocationState = () => {
+const makeSelectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
 
@@ -59,6 +57,6 @@ const selectLocationState = () => {
 };
 
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: selectLocationState(),
+  selectLocationState: makeSelectLocationState(),
 });
 ```

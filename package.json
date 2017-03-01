@@ -1,6 +1,6 @@
 {
   "name": "react-boilerplate-logic",
-  "version": "3.3.4",
+  "version": "3.4.0",
   "description": "redux-logic fork of mxstbr/react-boilerplate - A highly scalable, offline-first foundation with the best developer experience and a focus on performance and best practices. (sagas swapped out for redux-logic)",
   "repository": {
     "type": "git",
